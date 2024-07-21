@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2024 Jérémy Didderen
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="security_overview_wizard_kanban_view" model="ir.ui.view">
+        <field name="name">security.overview.wizard.kanban.view</field>
+        <field name="model">security.overview.wizard</field>
+        <field name="arch" type="xml">
+            <kanban
+                class="o_kanban_dashboard o_hr_department_kanban o_kanban_small_column"
+                create="false"
+                edit="false"
+                delete="false"
+            >
+                <field name="model_id" />
+                <field name="model" />
+                <field name="model_name" />
+                <field name="info" />
+                <field name="can_create" />
+                <field name="can_read" />
+                <field name="can_write" />
+                <field name="can_unlink" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div t-attf-class="o_kanban_card_header oe_kanban_details">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary"><field
+                                            name="model_name"
+                                        /></div>
+                                </div>
+                            </div>
+                            <div class="container o_kanban_card_content">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <i
+                                            class="fa fa-eye"
+                                            aria-label="Can read"
+                                            title="Can read"
+                                        />
+                                    </div>
+                                    <div class="col-10">
+                                        <field name="can_read" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-1">
+                                        <i
+                                            class="fa fa-plus me-3"
+                                            aria-label="Can create"
+                                            title="Can create"
+                                        />
+                                    </div>
+                                    <div class="col-10">
+                                        <field name="can_create" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-1">
+                                        <i
+                                            class="fa fa-edit me-3"
+                                            aria-label="Can write"
+                                            title="Can write"
+                                        />
+                                    </div>
+                                    <div class="col-10">
+                                        <field name="can_write" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-1">
+                                        <i
+                                            class="fa fa-trash me-3"
+                                            aria-label="Can delete"
+                                            title="Can delete"
+                                        />
+                                    </div>
+                                    <div class="col-10">
+                                        <field name="can_unlink" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="security_overview_wizard_tree_view" model="ir.ui.view">
+        <field name="name">security.overview.wizard.tree.view</field>
+        <field name="model">security.overview.wizard</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0">
+                <field name="model_id" column_invisible="1" />
+                <field name="model_name" />
+                <field name="model" optional="hide" groups="base.group_no_one" />
+                <field name="can_read" />
+                <field name="can_create" />
+                <field name="can_write" />
+                <field name="can_unlink" />
+                <field name="group_ids" widget="many2many_tags" optional="show" />
+                <field name="module_ids" widget="many2many_tags" optional="show" />
+            </tree>
+        </field>
+    </record>
+    <record id="security_overview_wizard_view_search" model="ir.ui.view">
+        <field name="name">security.overview.wizard.search</field>
+        <field name="model">security.overview.wizard</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="model_id" />
+                <field name="info" />
+                <field name="group_ids" />
+                <field name="module_ids" />
+                <separator />
+                <filter
+                    string="Can Read"
+                    name="can_read"
+                    domain="[('can_read', '=', True)]"
+                />
+                <filter
+                    string="Can Create"
+                    name="can_create"
+                    domain="[('can_create', '=', True)]"
+                />
+                <filter
+                    string="Can Write"
+                    name="can_write"
+                    domain="[('can_write', '=', True)]"
+                />
+                <filter
+                    string="Can Unlink"
+                    name="can_unlink"
+                    domain="[('can_unlink', '=', True)]"
+                />
+                <separator />
+                <group expand="0" string="Group By...">
+                    <filter
+                        string="Modules"
+                        name="modules"
+                        context="{'group_by': 'module_ids'}"
+                    />
+                    <filter
+                        string="Groups"
+                        name="groups"
+                        context="{'group_by': 'group_ids'}"
+                    />
+                    <filter
+                        string="Can Read"
+                        name="can_read"
+                        context="{'group_by': 'can_read'}"
+                    />
+                    <filter
+                        string="Can Create"
+                        name="can_create"
+                        context="{'group_by': 'can_create'}"
+                    />
+                    <filter
+                        string="Can Write"
+                        name="can_write"
+                        context="{'group_by': 'can_write'}"
+                    />
+                    <filter
+                        string="Can Unlink"
+                        name="can_unlink"
+                        context="{'group_by': 'can_unlink'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="security_overview_wizard_action" model="ir.actions.act_window">
+        <field name="name">Security Overview</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">security.overview.wizard</field>
+        <field name="view_mode">kanban,list</field>
+        <field name="domain">[("id","=", 0)]</field>
+    </record>
+</odoo>
